@@ -1,19 +1,16 @@
 const resolve = require('resolve');
-const fs = require('fs');
 const glob = require('glob');
 const path = require('path');
 const packageJson = require('./package.json');
 
 const findExtensionCommands = registerFunction => {
-  fs.readdirSync(`${__dirname}/commands`).map(file => {
-    try {
-      const commandPath = resolve.sync(file, { moduleDirectory: 'commands' });
-      const command = require(commandPath);
+  const commands = glob.sync('commands/**.js', { cwd: __dirname });
 
-      registerFunction(command);
-    } catch (error) {
-      console.warn(error);
-    }
+  commands.forEach(commandFileName => {
+    const commandPath = resolve.sync(`./${commandFileName}`);
+    const command = require(commandPath);
+
+    registerFunction(command);
   });
 };
 
