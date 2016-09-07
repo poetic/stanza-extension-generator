@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/poetic/stanza-extension-generator#readme",
   "dependencies": {
-    "fs": "0.0.1-security"
+    "fs": "0.0.1-security",
+    "glob": "^7.0.6",
+    "path": "^0.12.7"
   }
 }

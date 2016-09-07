@@ -1,8 +1,8 @@
 const resolve = require('resolve');
 const fs = require('fs');
-
-const appGeneratorPath = resolve.sync('./generators/app/index');
-const commandGeneratorPath = resolve.sync('./generators/command/index');
+const glob = require('glob');
+const path = require('path');
+const packageJson = require('./package.json');
 
 const findExtensionCommands = registerFunction => {
   fs.readdirSync(`${__dirname}/commands`).map(file => {
@@ -17,9 +17,19 @@ const findExtensionCommands = registerFunction => {
   });
 };
 
-module.exports.register = (stanza) => {
-  stanza.registerGenerator(appGeneratorPath, 'stanza-extension');
-  stanza.registerGenerator(commandGeneratorPath, 'stanza-extension:command');
+const findExtensionGenerators = registerFunction => {
+  const generators = glob.sync('generators/*/index.js', { cwd: __dirname });
 
+  generators.forEach(generator => {
+    const generatorPath = resolve.sync(`./${generator}`);
+    const directory = path.dirname(generatorPath).split('/').pop();
+    const namespace = `${packageJson.name}:${directory}`;
+
+    registerFunction(generatorPath, namespace);
+  });
+};
+
+module.exports.register = (stanza) => {
   findExtensionCommands(stanza.registerCommand);
+  findExtensionGenerators(stanza.registerGenerator);
 };
