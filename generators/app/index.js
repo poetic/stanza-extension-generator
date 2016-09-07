@@ -7,7 +7,6 @@ var mkdirp = require('mkdirp');
 module.exports = yeoman.Base.extend({
   initializing: function () {
     this.destinationRoot(`./${this.options.extensionName}`);
-    console.log('this.destinationRoot(): ', this.destinationRoot());
   },
   prompting: function () {
     // Have Yeoman greet the user.

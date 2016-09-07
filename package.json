@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/poetic/stanza-extension-generator/issues"
   },
-  "homepage": "https://github.com/poetic/stanza-extension-generator#readme"
+  "homepage": "https://github.com/poetic/stanza-extension-generator#readme",
+  "dependencies": {
+    "fs": "0.0.1-security"
+  }
 }
