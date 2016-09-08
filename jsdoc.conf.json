@@ -1,0 +1,18 @@
+{
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "templates": {
+    "systemName": "Stanza Extension Generator Docs",
+    "copyright": "&copy; 2016 Poetic Systems, LLC - All rights reserved.",
+    "theme": "cosmo",
+    "inverseNav": true
+  },
+  "opts": {
+    "recurse": true,
+    "package": "package.json",
+    "template": "node_modules/ink-docstrap/template",
+    "destination": "docs",
+    "readme": "README.md"
+  }
+}
