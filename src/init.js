@@ -14,10 +14,9 @@ import packageJson from '../package.json';
  * @returns {class} Instantiated extension class
  */
 module.exports.initExtension = (registerWithObject, keyword) => {
-  const extension = new Extension(registerWithObject, keyword);
+  const extension = new Extension(packageJson.name, { registerWithObject, keyword });
 
-  extension.name = packageJson.name;
-  extension.discoverChildren();
+  console.log('extension: ', extension);
 
   return extension;
 };

@@ -1,6 +1,6 @@
-const resolve = require('resolve');
-const glob = require('glob');
-const path = require('path');
+import resolve from 'resolve';
+import glob from 'glob';
+import path from 'path';
 
 /**
  * Class representing an Extension
@@ -18,63 +18,58 @@ class Extension {
    * @param {string} keyword If register another extension, what type?
    * @returns {undefined}
    */
-  constructor(registerWithObject, keyword) {
-    this.registerWithObject = registerWithObject;
-    this.keyword = keyword;
+  constructor(name, { registerWithObject, keyword }) {
+    this._name = name;
+    this._registerWithObject = registerWithObject || {};
+    this._keyword = keyword || '';
+
+    this._commands = [];
+    this._generators = [];
+
+    this.discoverCommands();
+    this.discoverGenerators();
   }
 
   /**
-   * Return the extension name
+   * Find extenstion commands and register them with Stanza
    *
-   * @name name
+   * @name discoverCommands
    * @memberof Extension
-   * @returns {string} Extension name
-   */
-  get name() {
-    return this._name;
-  }
-
-  /**
-   * Set the extension name
-   *
-   * This will be used for the generators namespaces
-   *
-   * @name name
-   * @memberof Extension
-   * @param {String} name New extension name
    * @returns {undefined}
    */
-  set name(name) {
-    this._name = name;
-  }
+  discoverCommands() {
+    const { registerCommand } = this._registerWithObject;
 
-  /**
-   * Discover command and generators within the extension
-   *
-   * @name discoverChildren
-   * @memberof Extension
-   */
-  discoverChildren() {
-    const { registerCommand, registerGenerator } = this.registerWithObject;
-
-    // TODO: separtate out commands and generators search
-    const commands = glob.sync('../commands/**.js', { cwd: __dirname });
+    const commands = glob.sync('./commands/**.js', { cwd: __dirname });
 
     commands.forEach(commandFileName => {
       const commandPath = resolve.sync(`./${commandFileName}`);
       const command = require(commandPath);
 
+      this._commands.push(command);
+
       registerCommand(command);
     });
+  }
 
-    const generators = glob.sync('../generators/*/index.js', { cwd: __dirname });
+ /**
+   * Find extenstion generators and register them with Stanza
+   *
+   * @name discoverGenerators
+   * @memberof Extension
+   * @returns {undefined}
+   */
+  discoverGenerators() {
+    const { registerGenerator } = this._registerWithObject;
+
+    const generators = glob.sync('./generators/*/index.js', { cwd: __dirname });
 
     generators.forEach(generator => {
       const generatorPath = resolve.sync(`./${generator}`);
       const directory = path.dirname(generatorPath).split('/').pop();
       const namespace = `${this._name}:${directory}`;
 
-      console.log('namespace: ', namespace);
+      this._generators.push({ generatorPath, namespace });
 
       registerGenerator(generatorPath, namespace);
     });
