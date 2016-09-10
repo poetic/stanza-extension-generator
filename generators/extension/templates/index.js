@@ -26,7 +26,7 @@ const findExtensionGenerators = registerFunction => {
   });
 };
 
-module.exports.register = (stanza) => {
+module.exports.register = stanza => {
   findExtensionCommands(stanza.registerCommand);
   findExtensionGenerators(stanza.registerGenerator);
 };
