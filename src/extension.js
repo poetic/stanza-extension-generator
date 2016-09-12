@@ -1,6 +1,7 @@
 import resolve from 'resolve';
 import glob from 'glob';
 import path from 'path';
+import yeoman from 'yeoman-environment';
 
 /**
  * Class representing an Extension
@@ -19,9 +20,10 @@ class Extension {
    * @returns {undefined}
    */
   constructor(name, { registerWithObject, keyword }) {
+    this._keyword = keyword || '';
     this._name = name;
     this._registerWithObject = registerWithObject || {};
-    this._keyword = keyword || '';
+    this._yeomanEnv = yeoman.createEnv();
 
     this._commands = [];
     this._generators = [];
@@ -38,17 +40,18 @@ class Extension {
    * @returns {undefined}
    */
   discoverCommands() {
-    const { registerCommand } = this._registerWithObject;
-
     const commands = glob.sync('./commands/**.js', { cwd: __dirname });
 
     commands.forEach(commandFileName => {
       const commandPath = resolve.sync(`./${commandFileName}`);
       const command = require(commandPath);
 
-      this._commands.push(command);
+      this._registerWithObject.commander
+        .command(command.pattern)
+        .description(command.description)
+        .action((arg, options) => command.action(arg, options, {}));
 
-      registerCommand(command);
+      this._commands.push(command);
     });
   }
 
@@ -60,8 +63,6 @@ class Extension {
    * @returns {undefined}
    */
   discoverGenerators() {
-    const { registerGenerator } = this._registerWithObject;
-
     const generators = glob.sync('./generators/*/index.js', { cwd: __dirname });
 
     generators.forEach(generator => {
@@ -71,7 +72,7 @@ class Extension {
 
       this._generators.push({ generatorPath, namespace });
 
-      registerGenerator(generatorPath, namespace);
+      this._yeomanEnv.register(generatorPath, namespace);
     });
   }
 }
