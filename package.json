@@ -2,7 +2,7 @@
   "name": "stanza-extension-generator",
   "version": "0.0.0",
   "description": "Stanza extension to generate Stanza extensions with Yeoman",
-  "main": "index.js",
+  "main": "src/init.js",
   "scripts": {
     "build": "babel src -d lib",
     "watch": "babel src -d lib --watch",

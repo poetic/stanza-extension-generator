@@ -13,10 +13,8 @@ import packageJson from '../package.json';
  * i.e. stanza-extension, stanza-webpack, stanza-express
  * @returns {class} Instantiated extension class
  */
-module.exports.initExtension = (registerWithObject, keyword) => {
+module.exports.register = (registerWithObject, keyword) => {
   const extension = new Extension(packageJson.name, { registerWithObject, keyword });
-
-  console.log('extension: ', extension);
 
   return extension;
 };
