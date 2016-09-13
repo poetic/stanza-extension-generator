@@ -1,37 +1,36 @@
-'use strict';
-var yeoman = require('yeoman-generator');
-var chalk = require('chalk');
-var yosay = require('yosay');
-var mkdirp = require('mkdirp');
+const yeoman = require('yeoman-generator');
+const chalk = require('chalk');
+const yosay = require('yosay');
+const mkdirp = require('mkdirp');
 
 module.exports = yeoman.Base.extend({
-  initializing: function () {
+  initializing() {
     this.destinationRoot(`./${this.options.extensionName}`);
   },
-  prompting: function () {
-    // Have Yeoman greet the user.
+  prompting() {
     this.log(yosay(
-      'Welcome to the wonderful ' + chalk.red('stanza-extension:extension') + ' generator!'
+      `Welcome to the wonderful ${chalk.red('stanza-extension:extension')} generator!`
     ));
 
-    var prompts = [
+    const prompts = [
       {
-        type: 'input',
-        name: 'name',
-        message: 'What is the extension name?',
         default: this.options.extensionName,
+        message: 'What is the extension name?',
+        name: 'extensionName',
+        type: 'input',
+        value: this.options.extensionName,
       },
       {
-        type: 'input',
-        name: 'name',
-        message: 'What is your name?',
         default: this.name,
+        message: 'What is your name?',
+        name: 'authorName',
+        type: 'input',
       },
       {
-        type: 'input',
-        name: 'version',
+        default: '0.0.0',
         message: 'What is the version?',
-        default: '0.0.1',
+        name: 'version',
+        type: 'input',
       },
     ];
 
@@ -39,28 +38,18 @@ module.exports = yeoman.Base.extend({
       this.props = props;
     }.bind(this));
   },
-
-  writing: function () {
-    mkdirp('commands');
-    mkdirp('generators');
-
-    this.fs.copy(
-      this.templatePath('index.js'),
-      this.destinationPath('index.js')
-    )
-
-    this.fs.copyTpl(
-      this.templatePath('_package.json'),
-      this.destinationPath('package.json'),
-      {
-        name: this.options.extensionName,
-        version: this.props.version || '0.0.1',
-        author: this.props.author || 'Poetic Systems',
-      }
-    );
+  writing() {
+    mkdirp('src/commands');
+    mkdirp('src/generators');
   },
-
-  install: function () {
+  default() {
+    this.composeWith('stanza-extension-generator:dotfiles', {
+      options: {
+        props: this.props,
+      },
+    });
+  },
+  install() {
     this.installDependencies();
-  }
+  },
 });

@@ -1,9 +1,9 @@
 {
-  "name": "<%= name %>",
+  "name": "<%= extensionName %>",
   "engines": {
     "node": ">=6.0.0"
   },
-  "author": "<%= author %>",
+  "author": "<%= authorName %>",
   "version": "<%= version %>",
   "main": "index.js",
   "keywords": [

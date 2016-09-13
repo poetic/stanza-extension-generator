@@ -46,10 +46,18 @@ class Extension {
       const commandPath = resolve.sync(`./${commandFileName}`);
       const command = require(commandPath);
 
+      let additionalParams = {
+        name: this._name,
+      };
+
+      if (command.pattern.includes('generate')) {
+        additionalParams.yeomanEnv = this._yeomanEnv;
+      }
+
       this._registerWithObject.commander
         .command(command.pattern)
         .description(command.description)
-        .action((arg, options) => command.action(arg, options, {}));
+        .action((arg, options) => command.action(arg, options, additionalParams));
 
       this._commands.push(command);
     });
