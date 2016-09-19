@@ -1,4 +1,4 @@
-import StanzaExtensionGenerator from './extension';
+import <%= extensionName %> from './extension';
 import packageJson from '../package.json';
 
 /**
@@ -14,7 +14,7 @@ import packageJson from '../package.json';
  * @returns {class} Instantiated extension class
  */
 module.exports.register = (registerWithObject, keyword) => {
-  const extension = new StanzaExtensionGenerator(packageJson.name, registerWithObject, keyword);
+  const extension = new <%= extensionName %>(packageJson.name, registerWithObject, keyword);
 
   return extension;
 };

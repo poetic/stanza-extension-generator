@@ -5,6 +5,10 @@ const mkdirp = require('mkdirp');
 
 module.exports = yeoman.Base.extend({
   initializing() {
+    this.extensionClassName = this.options.extensionName
+    .replace(/(\w)(\w*)/g, (g0, g1, g2) => g1.toUpperCase() + g2.toLowerCase())
+    .replace(/-/g, '');
+
     this.destinationRoot(`./${this.options.extensionName}`);
   },
   prompting() {
@@ -41,6 +45,22 @@ module.exports = yeoman.Base.extend({
   writing() {
     mkdirp('src/commands');
     mkdirp('src/generators');
+
+    this.fs.copyTpl(
+      this.templatePath('init.js'),
+      this.destinationPath('src/init.js'),
+      {
+        extensionName: this.extensionClassName,
+      },
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('extension.js'),
+      this.destinationPath('src/extension.js'),
+      {
+        extensionName: this.extensionClassName,
+      },
+    );
   },
   default() {
     this.composeWith('stanza-extension-generator:dotfiles', {
