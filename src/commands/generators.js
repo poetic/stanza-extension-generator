@@ -15,28 +15,24 @@ class Generators {
     this._discoverGenerators();
   }
 
-  // TODO: We need a way to customize the description and command for generators
   _discoverGenerators() {
-    const generators = glob.sync('generators/*/index.js', { cwd: this._extensionPath });
+    const generators = glob.sync('generators/*.js', { cwd: this._extensionPath });
 
     generators.forEach(generatorFilePath => {
       const generatorPath = resolve.sync(`${this._extensionPath}/${generatorFilePath}`);
-      const directory = path.dirname(generatorPath).split('/').pop();
-      const namespace = `${this._extensionName}:${directory}`;
-      const generator = {
-        generatorPath,
-        namespace,
-      };
+      const Generator = require(generatorPath).default;
+      const generator = new Generator(this._extensionName);
 
-      this._yeomanEnv.register(generator.generatorPath, generator.namespace);
-      this.createCommand(generator);
+      this._yeomanEnv.register(generator.path, generator.namespace);
+
+      if (generator.createCommand) this.createCommand(generator);
     });
   }
 
   createCommand(generator) {
     this._commander
-      .command(`${generator.namespace} [name]`)
-      .description('Extension generator -- we should be able to customize this.')
+      .command(generator.command)
+      .description(generator.description)
       .action((arg, options) => this.action(arg, options, generator));
   }
 
