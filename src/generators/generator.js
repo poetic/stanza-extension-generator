@@ -5,6 +5,9 @@ export default class ExtensionGenerator {
     this.path = `${__dirname}/generator/index.js`;
 
     this.command = `${extensionPath}:generate:generator <name>`;
-    this.createCommand = true;
+  }
+
+  action(arg, yeomanEnv, options = {}) {
+    yeomanEnv.run(this.namespace, { extensionName: arg });
   }
 }

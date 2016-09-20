@@ -5,6 +5,9 @@ export default class DotfilesGenerator {
     this.path = `${__dirname}/dotfiles/index.js`;
 
     this.command = `${extensionPath}:generate:dotfiles`;
-    this.createCommand = false;
+  }
+
+  action(arg, yeomanEnv, options = {}) {
+    yeomanEnv.run(this.namespace, { extensionName: arg });
   }
 }

@@ -1,5 +1,4 @@
 import glob from 'glob';
-import path from 'path';
 import resolve from 'resolve';
 import yeoman from 'yeoman-environment';
 
@@ -25,7 +24,7 @@ class Generators {
 
       this._yeomanEnv.register(generator.path, generator.namespace);
 
-      if (generator.createCommand) this.createCommand(generator);
+      this.createCommand(generator);
     });
   }
 
@@ -33,11 +32,7 @@ class Generators {
     this._commander
       .command(generator.command)
       .description(generator.description)
-      .action((arg, options) => this.action(arg, options, generator));
-  }
-
-  action(arg, options, generator) {
-    this._yeomanEnv.run(generator.namespace, { extensionName: this._extensionName });
+      .action((arg, options) => generator.action(arg, this._yeomanEnv, options));
   }
 }
 
