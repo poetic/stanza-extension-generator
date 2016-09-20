@@ -1,14 +1,14 @@
+ // TODO: Import from global stanza-cli and remove relative path
+import Command from '../../../stanza-cli/src/command';
 import glob from 'glob';
 import resolve from 'resolve';
 import yeoman from 'yeoman-environment';
 
-class Generators {
+export default class Generators extends Command {
   constructor(extensionName, extensionPath, commander) {
-    this._commander = commander;
-    this._extensionName = extensionName;
-    this._extensionPath = extensionPath;
-    this._yeomanEnv = yeoman.createEnv();
+    super(extensionName, extensionPath, commander);
 
+    this._yeomanEnv = yeoman.createEnv();
     this._generators = [];
 
     this._discoverGenerators();
@@ -21,6 +21,8 @@ class Generators {
       const generatorPath = resolve.sync(`${this._extensionPath}/${generatorFilePath}`);
       const Generator = require(generatorPath).default;
       const generator = new Generator(this._extensionName);
+
+      this._generators.push({ path: generator.path, namespace: generator.namespace });
 
       this._yeomanEnv.register(generator.path, generator.namespace);
 
@@ -35,5 +37,3 @@ class Generators {
       .action((arg, options) => generator.action(arg, this._yeomanEnv, options));
   }
 }
-
-export default Generators;
