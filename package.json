@@ -4,8 +4,6 @@
   "description": "Stanza extension to generate Stanza extensions with Yeoman",
   "main": "src/init.js",
   "scripts": {
-    "build": "babel src -d lib",
-    "watch": "babel src -d lib --watch",
     "docs": "jsdoc src -c jsdoc.conf.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
