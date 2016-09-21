@@ -4,17 +4,6 @@ module.exports = yeoman.Base.extend({
   writing() {
     const { props } = this.options;
 
-    // package.json
-    this.fs.copyTpl(
-      this.templatePath('_package.json'),
-      this.destinationPath('../package.json'),
-      {
-        extensionName: props.extensionName,
-        version: props.version || '0.0.0',
-        authorName: props.authorName || 'Poetic Systems',
-      }
-    );
-
     // babel
     this.fs.copy(
       this.templatePath('.babelrc'),

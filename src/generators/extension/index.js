@@ -46,6 +46,27 @@ module.exports = yeoman.Base.extend({
     mkdirp('src/commands');
     mkdirp('src/generators');
 
+    // package.json
+    this.fs.copyTpl(
+      this.templatePath('_package.json'),
+      this.destinationPath('package.json'),
+      {
+        extensionName: this.props.extensionName,
+        version: this.props.version || '0.0.0',
+        authorName: this.props.authorName || 'Poetic Systems',
+      }
+    );
+
+    // README
+    this.fs.copyTpl(
+      this.templatePath('README.md'),
+      this.destinationPath('README.md'),
+      {
+        extensionName: this.props.extensionName,
+      }
+    );
+
+    // init.js
     this.fs.copyTpl(
       this.templatePath('init.js'),
       this.destinationPath('src/init.js'),
@@ -54,6 +75,7 @@ module.exports = yeoman.Base.extend({
       },
     );
 
+    // extension.js
     this.fs.copyTpl(
       this.templatePath('extension.js'),
       this.destinationPath('src/extension.js'),
