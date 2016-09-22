@@ -1,7 +1,10 @@
 {
-  "name": "stanza-extension-generator",
-  "version": "0.0.0",
-  "description": "Stanza extension to generate Stanza extensions with Yeoman",
+  "name": "<%= extensionName %>",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "author": "<%= authorName %>",
+  "version": "<%= version %>",
   "main": "src/init.js",
   "scripts": {
     "build": "babel src -d lib",
@@ -9,19 +12,9 @@
     "docs": "jsdoc src -c jsdoc.conf.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/poetic/stanza-extension-generator.git"
-  },
   "keywords": [
     "stanza-extension"
   ],
-  "author": "Poetic Systems",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/poetic/stanza-extension-generator/issues"
-  },
-  "homepage": "https://github.com/poetic/stanza-extension-generator#readme",
   "dependencies": {
     "glob": "^7.0.6",
     "path": "^0.12.7",
@@ -41,3 +34,4 @@
     "jsdoc": "^3.4.0"
   }
 }
+

@@ -5,8 +5,7 @@ var yosay = require('yosay');
 
 module.exports = yeoman.Base.extend({
   initializing: function () {
-    // temp set the destination in the generated folder
-    // this.destinationRoot('./commands/');
+    this.destinationRoot(`${this.destinationRoot()}/src/commands`);
     console.log('this.destinationRoot(()): ', this.destinationRoot());
   },
   prompting: function () {
