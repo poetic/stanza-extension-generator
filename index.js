@@ -1,5 +1,6 @@
-import StanzaExtensionGenerator from './extension';
-import packageJson from '../package.json';
+require('babel-register');
+const StanzaExtensionGenerator = require('./src/extension').default;
+const packageJson = require('./package.json');
 
 /**
  * Initialize extension to pass in object in which to register with and set
@@ -13,9 +14,8 @@ import packageJson from '../package.json';
  * i.e. stanza-extension, stanza-webpack, stanza-express
  * @returns {class} Instantiated extension class
  */
-module.exports.register = (registerWithObject, keyword) => {
-  const extension = new StanzaExtensionGenerator(packageJson.name, registerWithObject, keyword);
+module.exports.register = (registerWithObject, keyword) => { const extension =
+  new StanzaExtensionGenerator(packageJson.name, registerWithObject, keyword);
 
   return extension;
-};
-
+}

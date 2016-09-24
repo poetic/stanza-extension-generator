@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "author": "Poetic Systems",
   "description": "Stanza extension to generate Stanza extensions with Yeoman",
-  "main": "src/init.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src",
@@ -23,6 +22,8 @@
   },
   "homepage": "https://github.com/poetic/stanza-extension-generator#readme",
   "dependencies": {
+    "babel-preset-es2015": "^6.14.0",
+    "babel-register": "^6.14.0",
     "glob": "^7.0.6",
     "path": "^0.12.7",
     "resolve": "^1.1.7",
