@@ -14,8 +14,8 @@ const packageJson = require('./package.json');
  * i.e. stanza-extension, stanza-webpack, stanza-express
  * @returns {class} Instantiated extension class
  */
-module.exports.register = (registerWithObject, keyword) => { const extension =
-  new StanzaExtensionGenerator(packageJson.name, registerWithObject, keyword);
+module.exports.register = (registerWithObject, keyword) => {
+  const extension = new StanzaExtensionGenerator(packageJson.name, registerWithObject, keyword);
 
   return extension;
-}
+};
