@@ -1,30 +1,33 @@
-'use strict';
-var yeoman = require('yeoman-generator');
-var chalk = require('chalk');
-var yosay = require('yosay');
+const yeoman = require('yeoman-generator');
+const chalk = require('chalk');
+const yosay = require('yosay');
 
 module.exports = yeoman.Base.extend({
-  initializing: function () {
+  initializing() {
+    this.commandClassName = this.options.name
+    .replace(/(\w)(\w*)/g, (g0, g1, g2) => g1.toUpperCase() + g2.toLowerCase())
+    .replace(/-/g, '');
+
     this.destinationRoot(`${this.destinationRoot()}/src/commands`);
-    console.log('this.destinationRoot(()): ', this.destinationRoot());
   },
-  prompting: function () {
+  prompting() {
     this.log(yosay(
-      'Welcome to the wonderful ' + chalk.red('generator-stanza-extension:generate:command') + ' generator!'
+      `Welcome to the wonderful ${chalk.red('generator-stanza-extension:generate:command')}
+      generator!`
     ));
 
-    var prompts = [
+    const prompts = [
       {
         type: 'input',
-        name: 'commandName',
-        message: 'what is the name of your command?',
-        default: this.options.commandName,
+        name: 'name',
+        message: 'Name?',
+        default: this.options.name,
       },
       {
         type: 'input',
         name: 'pattern',
-        message: 'What is the cmd pattern?',
-        default: `${this.options.commandName} [params]`,
+        message: 'What is the pattern?',
+        default: `${this.options.name} [params]`,
       },
       {
         type: 'input',
@@ -38,20 +41,15 @@ module.exports = yeoman.Base.extend({
     }.bind(this));
   },
 
-  writing: function () {
-    console.log('this.props: ', this.props);
+  writing() {
     this.fs.copyTpl(
-      this.templatePath('commands/command-name.js'),
-      this.destinationPath(`commands/${this.props.commandName}.js`),
+      this.templatePath('command-name.js'),
+      this.destinationPath(`${this.props.name}.js`),
       {
-        commandName: this.options.commandName,
+        name: this.commandClassName,
         pattern: this.props.pattern,
         description: this.props.description,
       }
     );
   },
-
-  install: function () {
-    // this.installDependencies();
-  }
 });
