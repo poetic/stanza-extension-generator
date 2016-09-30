@@ -1,5 +1,7 @@
-import <%= extensionName %> from './extension';
-import packageJson from '../package.json';
+require('babel-register');
+
+const <%= extensionName %> = require('./src/extension').default;
+const packageJson = require('./package.json');
 
 /**
  * Initialize extension to pass in object in which to register with and set

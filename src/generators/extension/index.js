@@ -75,8 +75,8 @@ module.exports = yeoman.Base.extend({
 
     // init.js
     this.fs.copyTpl(
-      this.templatePath('init.js'),
-      this.destinationPath('src/init.js'),
+      this.templatePath('index.js'),
+      this.destinationPath('index.js'),
       {
         extensionName: this.extensionClassName,
       }
