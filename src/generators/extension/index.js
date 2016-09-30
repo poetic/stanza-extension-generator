@@ -31,6 +31,12 @@ module.exports = yeoman.Base.extend({
         type: 'input',
       },
       {
+        default: '',
+        message: 'What does this extension do?',
+        name: 'description',
+        type: 'input',
+      },
+      {
         default: '0.0.0',
         message: 'What is the version?',
         name: 'version',
@@ -54,6 +60,7 @@ module.exports = yeoman.Base.extend({
         extensionName: this.props.extensionName,
         version: this.props.version || '0.0.0',
         authorName: this.props.authorName || 'Poetic Systems',
+        description: this.props.description || '',
       }
     );
 
@@ -72,7 +79,7 @@ module.exports = yeoman.Base.extend({
       this.destinationPath('src/init.js'),
       {
         extensionName: this.extensionClassName,
-      },
+      }
     );
 
     // extension.js
@@ -81,7 +88,7 @@ module.exports = yeoman.Base.extend({
       this.destinationPath('src/extension.js'),
       {
         extensionName: this.extensionClassName,
-      },
+      }
     );
   },
   default() {
