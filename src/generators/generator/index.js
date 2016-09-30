@@ -44,40 +44,7 @@ module.exports = yeoman.Base.extend({
   },
 
   default() {
-    console.log('__dirname: ', __dirname);
-    // const test = path.resolve('../comm')
-    // if (path.basename(this.destinationPath()) !== this.props.name) {
-    //   this.log(
-    //     'Your generator must be inside a folder named ' + this.props.name + '\n' +
-    //     'I\'ll automatically create this folder.'
-    //   );
-    //   mkdirp(this.props.name);
-    //   this.destinationRoot(this.destinationPath(this.props.name));
-    // }
-
-    // var readmeTpl = _.template(this.fs.read(this.templatePath('README.md')));
-
-    // this.composeWith('node:app', {
-    //   options: {
-    //     babel: false,
-    //     boilerplate: false,
-    //     name: this.props.name,
-    //     projectRoot: 'yeoman',
-    //     skipInstall: this.options.skipInstall,
-    //     readme: readmeTpl({
-    //       generatorName: this.props.name,
-    //       yoName: this.props.name.replace('generator-', '')
-    //     })
-    //   }
-    // }, {
-    //   local: require('generator-node').app
-    // });
-
-    // this.composeWith('generator:subgenerator', {
-    //   arguments: ['app']
-    // }, {
-    //   local: require.resolve('../subgenerator')
-    // });
+    console.log('Check is generators commands already exist in the extension.');
   },
 
   writing() {
