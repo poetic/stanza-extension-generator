@@ -1,4 +1,6 @@
-require('babel-register');
+require('babel-register')({
+  only: 'src',
+});
 
 const <%= extensionName %> = require('./src/extension').default;
 const packageJson = require('./package.json');

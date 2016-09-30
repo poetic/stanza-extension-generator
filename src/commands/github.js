@@ -1,7 +1,9 @@
 /*
  * @example
  * */
-import Command from '../../../stanza-cli/src/command';
+import requireg from 'requireg';
+
+const Command = requireg('stanza/src/command').default;
 
 export default class Github extends Command {
   constructor(extensionName, extensionPath, commander) {

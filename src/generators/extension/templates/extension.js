@@ -1,4 +1,6 @@
-import Extension from '../../stanza-cli/src/extension';
+import requireg from 'requireg';
+
+const Extension = requireg('stanza/src/extension').default;
 
 /**
  * <%= extensionName %> representing an Extension

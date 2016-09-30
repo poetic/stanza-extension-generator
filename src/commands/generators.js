@@ -1,8 +1,9 @@
- // TODO: Import from global stanza-cli and remove relative path
-import Command from '../../../stanza-cli/src/command';
+import requireg from 'requireg';
 import glob from 'glob';
 import resolve from 'resolve';
 import yeoman from 'yeoman-environment';
+
+const Command = requireg('stanza/src/command').default;
 
 export default class Generators extends Command {
   constructor(extensionName, extensionPath, commander) {

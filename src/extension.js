@@ -1,12 +1,13 @@
-// TODO: This should be imported from the globally installed Stanza CLI
-import Extension from '../../stanza-cli/src/extension';
+import requireg from 'requireg';
+
+const Extension = requireg('stanza/src/extension').default;
 
 /**
  * Class representing an Extension
 * */
 export default class StanzaExtensionGenerator extends Extension {
   constructor(name, registerWithObject, keyword) {
-    super(name, registerWithObject, keyword, __dirname);
+    super(name, registerWithObject, keyword);
 
     this._extensionPath = __dirname;
 
