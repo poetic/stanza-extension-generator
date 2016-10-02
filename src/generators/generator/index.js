@@ -1,4 +1,5 @@
 const chalk = require('chalk');
+const fs = require('fs');
 const path = require('path');
 const yeoman = require('yeoman-generator');
 const yosay = require('yosay');
@@ -28,12 +29,12 @@ module.exports = yeoman.Base.extend({
       {
         type: 'input',
         name: 'description',
-        message: 'What will we be generatoring?',
+        message: 'What will this generate?',
       },
       {
         type: 'input',
         name: 'command',
-        message: 'What command should be us to call this generator?',
+        message: 'What command should be called to use this generator?',
         default: `generate-${this.options.name}`,
       },
     ];
@@ -44,10 +45,21 @@ module.exports = yeoman.Base.extend({
   },
 
   default() {
-    console.log('Check is generators commands already exist in the extension.');
+    try {
+      fs.statSync('../../commands/generators.js');
+    } catch (error) {
+      this.generateCommand = true;
+    }
   },
 
   writing() {
+    if (this.generateCommand) {
+      this.fs.copy(
+        this.templatePath('generators.js'),
+        this.destinationPath('../../commands/generators.js')
+      );
+    }
+
     this.fs.copy(
       this.templatePath('index.js'),
       this.destinationPath('index.js')
