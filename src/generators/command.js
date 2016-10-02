@@ -8,6 +8,6 @@ export default class CommandGenerator {
   }
 
   action(arg, yeomanEnv, options = {}) {
-    yeomanEnv.run(this.namespace, { extensionName: arg });
+    yeomanEnv.run(this.namespace, { name: arg });
   }
 }

@@ -1,13 +1,16 @@
-import yeoman from 'yeoman-environment';
-import Extension from '../../stanza-cli/src/extension';
+import requireg from 'requireg';
+
+const Extension = requireg('stanza/src/extension').default;
 
 /**
  * <%= extensionName %> representing an Extension
 * */
-class <%= extensionName %> extends Extension {
+export default class <%= extensionName %> extends Extension {
   constructor(name, registerWithObject, keyword) {
     super(name, registerWithObject, keyword, __dirname);
+
+    this._extensionPath = __dirname;
+
+    this.discoverCommands(`${this._extensionPath}/commands`);
   }
 }
-
-export default <%= extensionName %>;

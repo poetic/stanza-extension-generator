@@ -1,91 +1,76 @@
-'use strict';
+const chalk = require('chalk');
+const fs = require('fs');
 const path = require('path');
-const generators = require('yeoman-generator');
-const askName = require('inquirer-npm-name');
-const _ = require('lodash');
-const extend = require('deep-extend');
-const mkdirp = require('mkdirp');
+const yeoman = require('yeoman-generator');
+const yosay = require('yosay');
 
-function makeGeneratorName(name) {
-  name = _.kebabCase(name);
-  name = name.indexOf('generator-') === 0 ? name : 'generator-' + name;
-  return name;
-}
+module.exports = yeoman.Base.extend({
+  initializing() {
+    this.generatorClassName = this.options.name
+    .replace(/(\w)(\w*)/g, (g0, g1, g2) => g1.toUpperCase() + g2.toLowerCase())
+    .replace(/-/g, '');
 
-module.exports = generators.Base.extend({
-  initializing: function () {
-    this.props = {};
+    this.destinationRoot(`${this.destinationRoot()}/src/generators/${this.options.name}`);
   },
 
-  prompting: function () {
-    return askName({
-      name: 'name',
-      message: 'Your generator name',
-      default: makeGeneratorName(path.basename(process.cwd())),
-      filter: makeGeneratorName,
-      validate: function (str) {
-        return str.length > 'generator-'.length;
-      }
-    }, this).then(function (props) {
-      this.props.name = props.name;
+  prompting() {
+    this.log(yosay(
+      `Welcome to the wonderful ${chalk.red('generator-stanza-extension:generate:generator')}
+      generator!`
+    ));
+
+    const prompts = [
+      {
+        type: 'input',
+        name: 'name',
+        message: 'Name?',
+        default: this.options.name,
+      },
+      {
+        type: 'input',
+        name: 'description',
+        message: 'What will this generate?',
+      },
+      {
+        type: 'input',
+        name: 'command',
+        message: 'What command should be called to use this generator?',
+        default: `generate-${this.options.name}`,
+      },
+    ];
+
+    return this.prompt(prompts).then(function (props) {
+      this.props = props;
     }.bind(this));
   },
 
-  default: function () {
-    if (path.basename(this.destinationPath()) !== this.props.name) {
-      this.log(
-        'Your generator must be inside a folder named ' + this.props.name + '\n' +
-        'I\'ll automatically create this folder.'
+  writing() {
+    if (!this.fs.exists('../../commands/generators.js')) {
+      this.fs.copy(
+        this.templatePath('generators.js'),
+        this.destinationPath('../../commands/generators.js')
       );
-      mkdirp(this.props.name);
-      this.destinationRoot(this.destinationPath(this.props.name));
     }
 
-    var readmeTpl = _.template(this.fs.read(this.templatePath('README.md')));
+    this.fs.copy(
+      this.templatePath('index.js'),
+      this.destinationPath('index.js')
+    );
 
-    this.composeWith('node:app', {
-      options: {
-        babel: false,
-        boilerplate: false,
+    this.fs.copyTpl(
+      this.templatePath('command.js'),
+      this.destinationPath(`../${this.props.name}.js`),
+      {
+        generatorClassName: this.generatorClassName,
         name: this.props.name,
-        projectRoot: 'generators',
-        skipInstall: this.options.skipInstall,
-        readme: readmeTpl({
-          generatorName: this.props.name,
-          yoName: this.props.name.replace('generator-', '')
-        })
+        description: this.props.description,
+        command: this.props.command,
       }
-    }, {
-      local: require('generator-node').app
-    });
+    );
 
-    this.composeWith('generator:subgenerator', {
-      arguments: ['app']
-    }, {
-      local: require.resolve('../subgenerator')
-    });
+    this.fs.copy(
+      this.templatePath('example.js'),
+      this.destinationPath('templates/example.js')
+    );
   },
-
-  writing: function () {
-    var pkg = this.fs.readJSON(this.destinationPath('package.json'), {});
-    extend(pkg, {
-      dependencies: {
-        'yeoman-generator': '^0.23.0',
-        chalk: '^1.0.0',
-        yosay: '^1.0.0'
-      },
-      devDependencies: {
-        'yeoman-test': '^1.0.0',
-        'yeoman-assert': '^2.0.0'
-      }
-    });
-    pkg.keywords = pkg.keywords || [];
-    pkg.keywords.push('yeoman-generator');
-
-    this.fs.writeJSON(this.destinationPath('package.json'), pkg);
-  },
-
-  install: function () {
-    this.installDependencies({bower: false});
-  }
 });

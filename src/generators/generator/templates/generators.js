@@ -5,20 +5,7 @@ import yeoman from 'yeoman-environment';
 
 const Command = requireg('stanza/src/command').default;
 
-/**
- * Class representing a Stanza Extension Command
- *
- * The generators command will search for any Yeoman generators found within
- * a Stanza extension
- *
- * @extends {Command}
- */
 export default class Generators extends Command {
-  /**
-   * @param {string} extensionName Extension Name
-   * @param {string} extensionPath Absolute path of the extension
-   * @param {Object} commander Commanderjs
-   */
   constructor(extensionName, extensionPath, commander) {
     super(extensionName, extensionPath, commander);
 
@@ -28,12 +15,6 @@ export default class Generators extends Command {
     this._discoverGenerators();
   }
 
-  /**
-   * Discover Yeoman generators belonging to this extension and register them with
-   * the Yeoman enviornment
-   *
-   * @return {undefined}
-   */
   _discoverGenerators() {
     const generators = glob.sync('generators/*.js', { cwd: this._extensionPath });
 
@@ -50,12 +31,6 @@ export default class Generators extends Command {
     });
   }
 
-  /**
-   * Register the Yeoman generators with Commanderjs
-   *
-   * @param {Object} generator Yeoman generator object with the command, description and action
-   * @return {undefined}
-   */
   createCommand(generator) {
     this._commander
       .command(generator.command)

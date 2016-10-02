@@ -1,11 +1,15 @@
-import <%= extensionName %> from './extension';
-import packageJson from '../package.json';
+require('babel-register')({
+  only: 'src',
+});
+
+const <%= extensionName %> = require('./src/extension').default;
+const packageJson = require('./package.json');
 
 /**
  * Initialize extension to pass in object in which to register with and set
  * extension name from the package.json file
  *
- * @name initExtension
+ * @name register
  * @function
  * @param {Object} registerWithObject Object in which to register commands and
  * generators with. i,e Stanza
