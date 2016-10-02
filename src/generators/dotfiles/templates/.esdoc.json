@@ -1,4 +1,5 @@
 {
   "source": "./src",
-  "destination": "./docs"
+  "destination": "./docs",
+  "ignore": ["./src/generators/"]
 }
