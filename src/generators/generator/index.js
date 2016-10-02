@@ -44,16 +44,8 @@ module.exports = yeoman.Base.extend({
     }.bind(this));
   },
 
-  default() {
-    try {
-      fs.statSync('../../commands/generators.js');
-    } catch (error) {
-      this.generateCommand = true;
-    }
-  },
-
   writing() {
-    if (this.generateCommand) {
+    if (!this.fs.exists('../../commands/generators.js')) {
       this.fs.copy(
         this.templatePath('generators.js'),
         this.destinationPath('../../commands/generators.js')
